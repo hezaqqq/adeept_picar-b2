@@ -196,42 +196,42 @@ class Functions(threading.Thread):
 		print('automaticProcessing')
 		dist = self.distRedress()
 		print(dist, "cm")
-		if dist >= 50:			# More than 50CM, go straight.
+		if dist >= 65:			# More than 50CM, go straight.
 			scGear.moveAngle(0, 0)
 			time.sleep(0.3)
-			move.move(40, 1, "mid")
+			move.move(35, 1, "mid")
 			print("Forward")
 		# More than 30cm and less than 50cm, detect the distance between the left and right sides.
-		elif dist > 30 and dist < 50:	
+		elif dist > 45 and dist < 65:	
 			move.move(0, 1, "mid")
-			scGear.moveAngle(1, -40)
+			scGear.moveAngle(1, 45)
 			time.sleep(0.4)
 			distLeft = self.distRedress()
 			self.scanList[0] = distLeft
 
 			# Go in the direction where the detection distance is greater.
-			scGear.moveAngle(1, 40)
+			scGear.moveAngle(1, -45)
 			time.sleep(0.4)
 			distRight = self.distRedress()
 			self.scanList[1] = distRight
 			print(self.scanList)
 			scGear.moveAngle(1, 0)
 			if self.scanList[0] >= self.scanList[1]:
-				scGear.moveAngle(0, -30)
-				time.sleep(0.3)
-				move.move(40, 1, "left")
-				print("Left")
-			else:
 				scGear.moveAngle(0, 30)
 				time.sleep(0.3)
-				move.move(40, 1, "right")
+				move.move(50, 1, "left")
+				print("Left")
+			else:
+				scGear.moveAngle(0, -30)
+				time.sleep(0.3)
+				move.move(50, 1, "right")
 				print("Right")
 		else:		# The distance is less than 30cm, back.
 			scGear.moveAngle(0, 0)
 			time.sleep(0.3)
-			move.move(40, -1, "mid")
+			move.move(35, -1, "mid")
 			print("Back")
-		time.sleep(0.4)	
+		time.sleep(0.5)	
 		
 
 
