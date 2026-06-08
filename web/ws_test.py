@@ -72,7 +72,7 @@ if __name__ == "__main__":
                     print("L'intensité doit être un entier entre 0 et 255")
 
             controller.control_led(led_no, color, intensity)
-            print(f"LED {led_no} -> Couleur {color.upper()} (Intensité: {intensity)})")
+            print(f"LED {led_no} -> Couleur {color.upper()} (Intensité: {min(max(0, intensity), 255)})")
 
         except KeyboardInterrupt:
             controller.turn_off_all()
