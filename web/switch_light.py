@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import time
 from gpiozero import LED
 
@@ -6,13 +9,13 @@ LED_CONFIG = {
     2: {"gpio": 25, "active_high": True},
     3: {"gpio": 11, "active_high": True},
     
-    4: {"gpio": 22, "active_high": False},
-    5: {"gpio": 23, "active_high": False},
-    6: {"gpio": 24, "active_high": False},
+    4: {"gpio": 0,  "active_high": False},
+    5: {"gpio": 19, "active_high": False},
+    6: {"gpio": 13, "active_high": False},
     
-    7: {"gpio": 17, "active_high": False},
-    8: {"gpio": 27, "active_high": False},
-    9: {"gpio": 18, "active_high": False},
+    7: {"gpio": 1,  "active_high": False},
+    8: {"gpio": 5,  "active_high": False},
+    9: {"gpio": 6,  "active_high": False},
 }
 
 leds = {}
