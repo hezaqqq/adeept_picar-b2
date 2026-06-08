@@ -1,69 +1,83 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # File name   : Buzzer.py
 # Website     : www.Adeept.com
-# Author      : Adeept / Gemini
-# Date        : 2026/06/08
+# Author      : Adeept
+# Date        : 2025/04/19
 from gpiozero import TonalBuzzer
-import time 
+import time
 import threading
 
-# Initialize TonalBuzzer on GPIO 18
 tb = TonalBuzzer(18)
 
 class Player(threading.Thread):
     def __init__(self, *args, **kwargs):
-        # Note, Duration (seconds) at ~130 BPM march speed
-        # "rest" turns off the buzzer temporarily.
-        # "G2" is utilized at high volume/low pitch to replicate the 3 heavy march steps.
-        
-        self.VER_POST_MELODY = [
-            # Measure 1: "Auf der Hei-de" (Pickup & entry)
-            ["G4", 0.15], ["A4", 0.15], ["G4", 0.15], ["G4", 0.15],
-            # Measure 2: "blüht ein klei-nes"
-            ["C5", 0.30], ["C5", 0.15], ["C5", 0.15],
-            # Measure 3: "Blü-me-lein"
-            ["E5", 0.30], ["D5", 0.15], ["C5", 0.15],
-            # Measure 4: (Instrumental/Vocal hold)
-            ["G4", 0.30], ["A4", 0.15], ["G4", 0.15],
-            
-            # Measure 5: "und das heißt"
-            ["B4", 0.15], ["C5", 0.15], ["D5", 0.30],
-            # Measure 6: (Pause)
-            ["rest", 0.15],
-            
-            # Measures 7-8: "E-RI-KA!" + The Three Massive March Stomps
-            ["C5", 0.35], ["D5", 0.15], ["C5", 0.30], # "E-ri-ka!"
-            ["rest", 0.10],
-            ["G2", 0.12], ["rest", 0.08],             # STOMP 1
-            ["G2", 0.12], ["rest", 0.08],             # STOMP 2
-            ["G2", 0.12], ["rest", 0.30],             # STOMP 3
-        ]
 
-        self.CHORUS_MELODY = [
-            # Measure 1: "Denn ihr Herz ist"
-            ["G4", 0.15], ["C5", 0.30], ["B4", 0.15], ["B4", 0.15],
-            # Measure 2: "vol-ler Sü-ßig-"
-            ["B4", 0.15], ["B4", 0.15], ["A4", 0.15], ["B4", 0.15],
-            # Measure 3: "-keit"
-            ["C5", 0.30], ["G4", 0.15], ["A4", 0.15], ["G4", 0.15],
-            
-            # Measure 4: "Es ge-hört nur"
-            ["B4", 0.30], ["C5", 0.15], ["D5", 0.15], ["D5", 0.15],
-            # Measure 5: "mir al-lein"
-            ["D5", 0.15], ["D5", 0.15], ["G5", 0.15], ["F5", 0.15], ["E5", 0.15],
-            # Measure 6: (Fill)
-            ["C5", 0.30], ["G4", 0.15], ["A4", 0.15], ["G4", 0.15],
-        ]
+        # --- Sheet music transcription ---
+        # Key: D major (F#, C#), Time: 4/4, Tempo: ~160 bpm (approx 0.375s per beat)
+        # Source: Piano right-hand melody (soprano saxophone rests throughout intro)
+        # Measures 1–12 visible in the score.
+        # The piano opens with a rapid ascending figure (marked 8va in m.1),
+        # then settles into a repeating rhythmic pattern.
+        # Note durations (in seconds) based on ~160 bpm:
+        #   quarter = 0.375, eighth = 0.1875, sixteenth = 0.09375, dotted-quarter = 0.5625
 
-        # Compile the entire structural song layout based directly on your request
-        self.song_SONG = (
-            self.VER_POST_MELODY + self.VER_POST_MELODY +  # Verse 1 (x2)
-            self.CHORUS_MELODY +                           # Chorus 1
-            self.VER_POST_MELODY +                         # Post-Chorus 1
-            self.VER_POST_MELODY + self.VER_POST_MELODY +  # Verse 2 (x2)
-            self.CHORUS_MELODY +                           # Chorus 2
-            self.VER_POST_MELODY                           # Post-Chorus 2
-        )
+        Q  = 0.375    # quarter note
+        E  = 0.1875   # eighth note
+        S  = 0.09375  # sixteenth note
+        DQ = 0.5625   # dotted quarter
+
+        self.SONG_1 = [
+            # Measure 1 — fast ascending run (8va, rendered at written pitch)
+            # D4 E4 F#4 G4 A4 B4 C#5 D5 (sixteenth-note run) + dotted quarter D5
+            ["D4",  S], ["E4",  S], ["F#4", S], ["G4",  S],
+            ["A4",  S], ["B4",  S], ["C#5", S], ["D5",  S],
+            ["D5",  DQ], ["rest", E],
+
+            # Measure 2 — melodic figure: A4 B4 A4 F#4 | D5 dotted
+            ["A4",  E], ["B4",  E], ["A4",  E], ["F#4", E],
+            ["D5",  DQ], ["rest", E],
+
+            # Measure 3 — repeat of measure 2 pattern
+            ["A4",  E], ["B4",  E], ["A4",  E], ["F#4", E],
+            ["D5",  DQ], ["rest", E],
+
+            # Measure 4 — similar figure, ending on E5
+            ["A4",  E], ["B4",  E], ["C#5", E], ["A4",  E],
+            ["E5",  DQ], ["rest", E],
+
+            # Measure 5 — continues; figure on D5
+            ["F#4", E], ["A4",  E], ["D5",  E], ["A4",  E],
+            ["D5",  DQ], ["rest", E],
+
+            # Measure 6 — figure on C#5 / A4
+            ["E4",  E], ["A4",  E], ["C#5", E], ["A4",  E],
+            ["C#5", DQ], ["rest", E],
+
+            # Measure 7 — figure on B4
+            ["D4",  E], ["F#4", E], ["B4",  E], ["F#4", E],
+            ["B4",  DQ], ["rest", E],
+
+            # Measure 8 — figure resolving back to D5
+            ["A4",  E], ["B4",  E], ["A4",  E], ["F#4", E],
+            ["D5",  DQ], ["rest", E],
+
+            # Measures 9–12 — piano continues similar pattern (sax still resting)
+            # Measure 9
+            ["A4",  E], ["B4",  E], ["A4",  E], ["F#4", E],
+            ["D5",  DQ], ["rest", E],
+
+            # Measure 10
+            ["A4",  E], ["B4",  E], ["C#5", E], ["A4",  E],
+            ["E5",  DQ], ["rest", E],
+
+            # Measure 11
+            ["F#4", E], ["A4",  E], ["D5",  E], ["A4",  E],
+            ["D5",  DQ], ["rest", E],
+
+            # Measure 12 — final measure shown, cadential
+            ["E4",  E], ["A4",  E], ["C#5", E], ["A4",  E],
+            ["A4",  Q], ["rest", Q],
+        ]
 
         self.__flag = threading.Event()
         self.__flag.clear()
@@ -75,14 +89,12 @@ class Player(threading.Thread):
         for note, duration in tune:
             if self.MusicMode == 0:
                 break
-            
             if note == "rest":
                 tb.stop()
             else:
                 tb.play(note)
-                
-            time.sleep(float(duration)) 
-        tb.stop() 
+            time.sleep(float(duration))
+        tb.stop()
 
     def start_playing(self):
         self.MusicMode = 1
@@ -100,24 +112,15 @@ class Player(threading.Thread):
         while True:
             self.__flag.wait()
             try:
-                self.play(self.song_SONG)
-                # End of song execution auto-pause
+                self.play(self.SONG_1)
+            except KeyboardInterrupt:
                 self.pause()
-            except Exception as e:
-                print(f"Playback error: {e}")
-                self.pause()
+                print("Program terminated by user.")
+
 
 if __name__ == "__main__":
     player = Player()
     player.start()
-    
-    print("Playing 'song' by Herms Niel (C-Major Tab Edition)...")
     player.start_playing()
-    
-    # Let the entire compilation play out or hit Ctrl+C to terminate early
-    try:
-        while player.MusicMode == 1:
-            time.sleep(0.5)
-    except KeyboardInterrupt:
-        player.pause()
-        print("\nPerformance halted by user.")
+    time.sleep(30)
+    player.pause()
