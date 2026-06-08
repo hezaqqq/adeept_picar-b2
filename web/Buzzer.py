@@ -1,69 +1,70 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # File name   : Buzzer.py
 # Website     : www.Adeept.com
-# Author      : Adeept
-# Date        : 2025/04/19
+# Author      : Adeept / Gemini
+# Date        : 2026/06/08
 from gpiozero import TonalBuzzer
 import time 
 import threading
+
+# Initialize TonalBuzzer on GPIO 18
 tb = TonalBuzzer(18)
+
 class Player(threading.Thread):
     def __init__(self, *args, **kwargs):
-        self.HAPPY_BIRTHDAY_SONG = [
-            ["G4", 0.3], ["G4", 0.3], ["A4", 0.3], ["G4", 0.3], ["C5", 0.3], ["B4", 0.6],
-            ["G4", 0.3], ["G4", 0.3], ["A4", 0.3], ["G4", 0.3], ["D5", 0.3], ["C5", 0.6],
-            ["G4", 0.3], ["G4", 0.3], ["C5", 0.3], ["B4", 0.3], ["C5", 0.3], ["B4", 0.3], ["A4", 0.6],
-            ["F5", 0.3], ["F5", 0.3], ["B4", 0.3], ["C5", 0.3], ["D5", 0.3], ["C5", 0.6]
+        # Note, Duration (seconds) at ~130 BPM march speed
+        # "rest" turns off the buzzer temporarily.
+        # "G2" is utilized at high volume/low pitch to replicate the 3 heavy march steps.
+        
+        self.VER_POST_MELODY = [
+            # Measure 1: "Auf der Hei-de" (Pickup & entry)
+            ["G4", 0.15], ["A4", 0.15], ["G4", 0.15], ["G4", 0.15],
+            # Measure 2: "blüht ein klei-nes"
+            ["C5", 0.30], ["C5", 0.15], ["C5", 0.15],
+            # Measure 3: "Blü-me-lein"
+            ["E5", 0.30], ["D5", 0.15], ["C5", 0.15],
+            # Measure 4: (Instrumental/Vocal hold)
+            ["G4", 0.30], ["A4", 0.15], ["G4", 0.15],
+            
+            # Measure 5: "und das heißt"
+            ["B4", 0.15], ["C5", 0.15], ["D5", 0.30],
+            # Measure 6: (Pause)
+            ["rest", 0.15],
+            
+            # Measures 7-8: "E-RI-KA!" + The Three Massive March Stomps
+            ["C5", 0.35], ["D5", 0.15], ["C5", 0.30], # "E-ri-ka!"
+            ["rest", 0.10],
+            ["G2", 0.12], ["rest", 0.08],             # STOMP 1
+            ["G2", 0.12], ["rest", 0.08],             # STOMP 2
+            ["G2", 0.12], ["rest", 0.30],             # STOMP 3
         ]
-        self.SONG_1 = [
-                    # Measure 7: "Auf..." (Pickup note)
-                    ["Eb4", 0.25], 
-                    
-                    # Measure 8: "...der Hei - de"
-                    ["Ab4", 0.5], ["Ab4", 0.25], ["Bb4", 0.25],
-                    
-                    # Measure 9: "blüht ein klein - es"
-                    ["C5", 0.5], ["C5", 0.25], ["Bb4", 0.25],
-                    
-                    # Measure 10-11: "Blü - "
-                    ["Ab4", 0.5], 
-                    # Measure 11: "...me - lein" (Eighth rests on beats 1 and 2)
-                    # We use None or just time.sleep in a real loop, but keeping it empty or a pause note works. 
-                    # For a simple buzzer, we can just represent rests with "None" or omit if needed.
-                    # Let's use a "rest" string so your play loop can handle silent gaps:
-                    ["rest", 0.5], ["rest", 0.5], 
-                    
-                    # Measure 12: (Piano fill / Rest)
-                    ["rest", 0.5],
-                    
-                    # Measure 13: "Und das" (Pickup to Erika)
-                    ["Bb4", 0.25], ["Bb4", 0.25],
-                    
-                    # Measure 14: "heißt..."
-                    ["C5", 0.5], 
-                    
-                    # Measure 15-17: "...E - ri - ka."
-                    ["Ab4", 0.25], ["F4", 0.25],  # Measure 15
-                    ["Eb4", 0.5],                 # Measure 16
-                    ["rest", 0.5],                # Measure 17
-                    
-                    # Measure 18: "Heiß von" (Pickup)
-                    ["Eb4", 0.25], ["Eb4", 0.25],
-                    
-                    # Measure 19: "hun - dert - tau - send"
-                    ["Bb4", 0.5], ["Bb4", 0.25], ["C5", 0.25],
-                    
-                    # Measure 20: "klein - es"
-                    ["Db5", 0.5], ["Db5", 0.25], ["C5", 0.25],
-                    
-                    # Measure 21-22: "Mäg - "
-                    ["Bb4", 0.5],
-                    # Measure 22: "...de - lein"
-                    ["rest", 0.5], ["rest", 0.5],
-                    
-                    # Measure 23: "ist mein" (Pickup to the next phrase)
-                    ["C5", 0.25], ["Bb4", 0.25]
-                ]
+
+        self.CHORUS_MELODY = [
+            # Measure 1: "Denn ihr Herz ist"
+            ["G4", 0.15], ["C5", 0.30], ["B4", 0.15], ["B4", 0.15],
+            # Measure 2: "vol-ler Sü-ßig-"
+            ["B4", 0.15], ["B4", 0.15], ["A4", 0.15], ["B4", 0.15],
+            # Measure 3: "-keit"
+            ["C5", 0.30], ["G4", 0.15], ["A4", 0.15], ["G4", 0.15],
+            
+            # Measure 4: "Es ge-hört nur"
+            ["B4", 0.30], ["C5", 0.15], ["D5", 0.15], ["D5", 0.15],
+            # Measure 5: "mir al-lein"
+            ["D5", 0.15], ["D5", 0.15], ["G5", 0.15], ["F5", 0.15], ["E5", 0.15],
+            # Measure 6: (Fill)
+            ["C5", 0.30], ["G4", 0.15], ["A4", 0.15], ["G4", 0.15],
+        ]
+
+        # Compile the entire structural song layout based directly on your request
+        self.song_SONG = (
+            self.VER_POST_MELODY + self.VER_POST_MELODY +  # Verse 1 (x2)
+            self.CHORUS_MELODY +                           # Chorus 1
+            self.VER_POST_MELODY +                         # Post-Chorus 1
+            self.VER_POST_MELODY + self.VER_POST_MELODY +  # Verse 2 (x2)
+            self.CHORUS_MELODY +                           # Chorus 2
+            self.VER_POST_MELODY                           # Post-Chorus 2
+        )
+
         self.__flag = threading.Event()
         self.__flag.clear()
         self.MusicMode = 0
@@ -74,7 +75,12 @@ class Player(threading.Thread):
         for note, duration in tune:
             if self.MusicMode == 0:
                 break
-            tb.play(note) 
+            
+            if note == "rest":
+                tb.stop()
+            else:
+                tb.play(note)
+                
             time.sleep(float(duration)) 
         tb.stop() 
 
@@ -94,15 +100,24 @@ class Player(threading.Thread):
         while True:
             self.__flag.wait()
             try:
-                self.play(self.SONG_1)
-            except KeyboardInterrupt:
+                self.play(self.song_SONG)
+                # End of song execution auto-pause
                 self.pause()
-                print("Program terminated by user.")
+            except Exception as e:
+                print(f"Playback error: {e}")
+                self.pause()
 
 if __name__ == "__main__":
     player = Player()
     player.start()
-    player.start_playing() 
-    time.sleep(5)
-    player.pause()
-
+    
+    print("Playing 'song' by Herms Niel (C-Major Tab Edition)...")
+    player.start_playing()
+    
+    # Let the entire compilation play out or hit Ctrl+C to terminate early
+    try:
+        while player.MusicMode == 1:
+            time.sleep(0.5)
+    except KeyboardInterrupt:
+        player.pause()
+        print("\nPerformance halted by user.")
