@@ -15,6 +15,17 @@ class Player(threading.Thread):
             ["G4", 0.3], ["G4", 0.3], ["C5", 0.3], ["B4", 0.3], ["C5", 0.3], ["B4", 0.3], ["A4", 0.6],
             ["F5", 0.3], ["F5", 0.3], ["B4", 0.3], ["C5", 0.3], ["D5", 0.3], ["C5", 0.6]
         ]
+        self.SONG_1 = [
+            ["E4", 0.3], ["G4", 0.3], ["A4", 0.6],
+            ["A4", 0.3], ["B4", 0.3], ["C5", 0.6],
+            ["C5", 0.3], ["B4", 0.3], ["A4", 0.3], ["G4", 0.3], ["E4", 0.6],
+            ["G4", 0.3], ["A4", 0.3], ["B4", 0.6],
+            ["B4", 0.3], ["C5", 0.3], ["D5", 0.6],
+            ["D5", 0.3], ["C5", 0.3], ["B4", 0.3], ["A4", 0.3], ["G4", 0.6],
+            ["E4", 0.3], ["G4", 0.3], ["A4", 0.6],
+            ["A4", 0.3], ["B4", 0.3], ["C5", 0.6],
+            ["B4", 0.3], ["A4", 0.3], ["G4", 0.3], ["E4", 0.9]
+        ]
         self.__flag = threading.Event()
         self.__flag.clear()
         self.MusicMode = 0
@@ -45,7 +56,7 @@ class Player(threading.Thread):
         while True:
             self.__flag.wait()
             try:
-                self.play(self.HAPPY_BIRTHDAY_SONG)
+                self.play(self.SONG_1)
             except KeyboardInterrupt:
                 self.pause()
                 print("Program terminated by user.")
