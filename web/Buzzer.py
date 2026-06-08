@@ -16,42 +16,54 @@ class Player(threading.Thread):
             ["F5", 0.3], ["F5", 0.3], ["B4", 0.3], ["C5", 0.3], ["D5", 0.3], ["C5", 0.6]
         ]
         self.SONG_1 = [
-            # "Auf der Hei - de blüht ein klein - es"
-            ["Ab4", 0.3], ["Eb4", 0.15], ["Eb4", 0.15],
-            ["F4",  0.3], ["Eb4", 0.15], ["Eb4", 0.15],
-            ["Eb4", 0.3], ["Bb4", 0.15], ["Bb4", 0.15],
-            ["Ab4", 0.6],
-
-            # "Blü - me - lein"
-            ["Ab4", 0.3], ["Bb4", 0.15], ["Ab4", 0.15],
-            ["Gb4", 0.3], ["Eb4", 0.15], ["Eb4", 0.15],
-            ["Eb4", 0.6],
-
-            # "Und das heißt"
-            ["Eb4", 0.3], ["F4",  0.15], ["Eb4", 0.15],
-            ["Gb4", 0.3], ["F4",  0.15], ["Eb4", 0.15],
-            ["Eb4", 0.6],
-
-            # "E - ri - ka"
-            ["Eb4", 0.4], ["F4", 0.2],
-            ["Gb4", 0.4], ["Eb4", 0.2],
-            ["Ab4", 0.9],
-
-            # "Heiß von hun-dert-tau-send klein-es"
-            ["Ab4", 0.3], ["Bb4", 0.15], ["Ab4", 0.15],
-            ["Gb4", 0.3], ["Eb4", 0.15], ["Eb4", 0.15],
-            ["Eb4", 0.3], ["F4",  0.15], ["Eb4", 0.15],
-            ["Db4", 0.6],
-
-            # Continuation / ending phrase
-            ["Db4", 0.3], ["Eb4", 0.15], ["Db4", 0.15],
-            ["C4",  0.3], ["Bb3", 0.15], ["Bb3", 0.15],
-            ["Bb3", 0.6],
-
-            ["Bb3", 0.3], ["C4",  0.15], ["Bb3", 0.15],
-            ["Db4", 0.3], ["C4",  0.15], ["Bb3", 0.15],
-            ["Ab3", 0.9],
-        ]
+                    # Measure 7: "Auf..." (Pickup note)
+                    ["Eb4", 0.25], 
+                    
+                    # Measure 8: "...der Hei - de"
+                    ["Ab4", 0.5], ["Ab4", 0.25], ["Bb4", 0.25],
+                    
+                    # Measure 9: "blüht ein klein - es"
+                    ["C5", 0.5], ["C5", 0.25], ["Bb4", 0.25],
+                    
+                    # Measure 10-11: "Blü - "
+                    ["Ab4", 0.5], 
+                    # Measure 11: "...me - lein" (Eighth rests on beats 1 and 2)
+                    # We use None or just time.sleep in a real loop, but keeping it empty or a pause note works. 
+                    # For a simple buzzer, we can just represent rests with "None" or omit if needed.
+                    # Let's use a "rest" string so your play loop can handle silent gaps:
+                    ["rest", 0.5], ["rest", 0.5], 
+                    
+                    # Measure 12: (Piano fill / Rest)
+                    ["rest", 0.5],
+                    
+                    # Measure 13: "Und das" (Pickup to Erika)
+                    ["Bb4", 0.25], ["Bb4", 0.25],
+                    
+                    # Measure 14: "heißt..."
+                    ["C5", 0.5], 
+                    
+                    # Measure 15-17: "...E - ri - ka."
+                    ["Ab4", 0.25], ["F4", 0.25],  # Measure 15
+                    ["Eb4", 0.5],                 # Measure 16
+                    ["rest", 0.5],                # Measure 17
+                    
+                    # Measure 18: "Heiß von" (Pickup)
+                    ["Eb4", 0.25], ["Eb4", 0.25],
+                    
+                    # Measure 19: "hun - dert - tau - send"
+                    ["Bb4", 0.5], ["Bb4", 0.25], ["C5", 0.25],
+                    
+                    # Measure 20: "klein - es"
+                    ["Db5", 0.5], ["Db5", 0.25], ["C5", 0.25],
+                    
+                    # Measure 21-22: "Mäg - "
+                    ["Bb4", 0.5],
+                    # Measure 22: "...de - lein"
+                    ["rest", 0.5], ["rest", 0.5],
+                    
+                    # Measure 23: "ist mein" (Pickup to the next phrase)
+                    ["C5", 0.25], ["Bb4", 0.25]
+                ]
         self.__flag = threading.Event()
         self.__flag.clear()
         self.MusicMode = 0
