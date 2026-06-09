@@ -90,8 +90,8 @@ if __name__ == '__main__':
     chann =  1
     # while True:
      
-    for i in range(10):
-      speed_set = 110
+    for i in range(2):
+      speed_set = 25
       Motor(chann, 1, speed_set)
       Motor(2, 1, speed_set)
       Motor(3, 1, speed_set)
