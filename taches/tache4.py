@@ -66,7 +66,6 @@ def drive_ramp(target_throttle, ramp_time=1.0):
 def calibrate_servo():
     print("\n=== ETALONNAGE SERVO ===")
     print("Le servo est place au centre theorique (duty=4915).")
-    print("Observe le decalage des roues et note-le.")
     print("Commandes : l=gauche | r=droite | ok=terminer\n")
     _set_servo(SERVO_CENTER)
 
@@ -76,7 +75,6 @@ def calibrate_servo():
         cmd = input(f"  decalage={offset:+d} > ").strip().lower()
         if cmd == 'ok':
             print(f"\nDecalage mesure : {offset:+d} (soit duty={SERVO_CENTER + offset})")
-            print("Note cette valeur pour corriger SERVO_CENTER si necessaire.\n")
             _set_servo(SERVO_CENTER)   # remet au centre theorique avant de sortir
             break
         elif cmd == 'l':
