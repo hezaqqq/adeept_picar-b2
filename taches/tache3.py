@@ -83,7 +83,7 @@ def set_angle(servo_id: int, angle: float) -> None:
 # ──────────────────────────────────────────────
 # Étape 1 : validation sur CH7 (servo libre)
 # ──────────────────────────────────────────────
-def test_ch15():
+def test_ch7():
     """
     Test de validation sur CH7 (servo libre, sans contrainte mécanique).
     Séquence : centre (90°) → gauche (45°) → droite (135°) → retour centre (90°).
@@ -97,11 +97,15 @@ def test_ch15():
         (135, "droite"),
         (90,  "retour centre"),
     ]
-    for angle, label in sequence:
-        print(f"  CH7 → {angle}° ({label})")
-        set_angle(7, angle)
-        time.sleep(1.0)
-    print("  ✓ CH7 OK\n")
+    try:
+        for angle, label in sequence:
+            print(f"  CH7 → {angle}° ({label})")
+            set_angle(7, angle)
+            time.sleep(1.0)
+        print("  ✓ CH7 OK\n")
+    except KeyboardInterrupt:
+        print("\nInterruption – retour à 90°.")
+        set_angle(7, 90)
 
 
 # ──────────────────────────────────────────────
@@ -176,7 +180,7 @@ def commande_manuelle():
 if __name__ == "__main__":
     print("=== Contrôle Servomoteurs – Robot Adeept ===")
     print("Étape 1 : test servo libre CH7")
-    test_ch15()
+    test_ch7()
 
     print("\nÉtape 2 : commande manuelle (CH0, CH1, CH2, CH7)")
     commande_manuelle()
