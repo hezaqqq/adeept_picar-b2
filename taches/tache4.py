@@ -40,7 +40,7 @@ def _set_servo(duty):
     pwm_motor.channels[SERVO_CHANNEL].duty_cycle = int(duty)
 
 # ── Fonction de pilotage avec rampe ─────────────────────────
-def drive_ramp(direction, target_speed=25, ramp_time=5.0):
+def drive_ramp(direction, target_speed=100, ramp_time=0.1):
     # direction : 1=avant | -1=arriere | 0=stop
     # target_speed : 0-100%
     # ramp_time : duree montee en vitesse (secondes)
@@ -48,6 +48,7 @@ def drive_ramp(direction, target_speed=25, ramp_time=5.0):
         _set_all_motors(0)
         print("[STOP]")
         return
+    target_speed = max(0, min(100, target_speed))
     steps = 100
     delay = ramp_time / steps
     for step in range(1, steps + 1):
@@ -90,7 +91,7 @@ def destroy():
 # ── Programme principal : commande manuelle ──────────────────
 if __name__ == '__main__':
     speed       = 25   # vitesse courante en %
-    ramp_time   = 5.0  # pente courante en secondes
+    ramp_time   = 0.1  # pente courante en secondes
     current_dir = 0    # direction courante
 
     print("=== COMMANDE MANUELLE ===")
