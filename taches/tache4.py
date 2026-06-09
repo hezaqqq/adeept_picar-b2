@@ -49,7 +49,7 @@ def drive_ramp(direction, target_speed=25, ramp_time=1.0):
         print("[STOP]")
         return
     target_speed = max(0, min(100, target_speed))
-    steps = 100
+    steps = 500
     delay = ramp_time / steps
     for step in range(1, steps + 1):
         throttle = _map(step, 0, steps, 0.0, target_speed / 100.0)
