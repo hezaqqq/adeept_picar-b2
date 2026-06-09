@@ -11,6 +11,8 @@ class LEDController:
             'B': (0, 0, 255),
             'N': (0, 0, 0)
         }
+    
+    
 
     def control_led(self, led_no, color, intensity=255):
         if not (0 <= led_no < 14):
