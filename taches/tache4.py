@@ -40,15 +40,14 @@ def _set_servo(duty):
     pwm_motor.channels[SERVO_CHANNEL].duty_cycle = int(duty)
 
 # ── Fonction de pilotage avec rampe ─────────────────────────
-def drive_ramp(direction, target_speed=25, ramp_time=1.0):
-    # direction : 1=avant | -1=arriere | 0=stop
-    # target_speed : 0-100%
-    # ramp_time : duree montee en vitesse (secondes)
-    if direction == 0:
-        _set_all_motors(0)
-        print("[STOP]")
-        return
-    target_speed = max(0, min(100, target_speed))
+# throttle courant global (-1.0 a +1.0)
+current_throttle = 0.0
+
+def drive_ramp(target_throttle, ramp_time=1.0):
+    # target_throttle : valeur signee -1.0 (arriere) a +1.0 (avant), 0=stop
+    # ramp_time       : duree de la transition en secondes
+    global current_throttle
+    target_throttle = max(-1.0, min(1.0, target_throttle))
     steps = 100
     delay = ramp_time / steps
     for step in range(1, steps + 1):
@@ -100,9 +99,9 @@ if __name__ == '__main__':
 
     print("=== COMMANDE MANUELLE ===")
     print("  f/b  - avant/arriere   |  s  - stop")
-    print("  +/-  - vitesse +-10%   |  r  - changer la pente")
-    print("  c    - etalonner servo  |  q  - quitter")
-    print(f"  Vitesse={speed}%  Rampe={ramp_time}s\n")
+    print("  +/-  - vitesse +-10%   |  c  - etalonner servo")
+    print("  q    - quitter")
+    print(f"  Vitesse de base = {speed}%  |  Rampe = 1s\n")
 
     try:
         while True:
@@ -117,9 +116,18 @@ if __name__ == '__main__':
                 drive_ramp(0.0)
             elif cmd == '+':
                 speed = min(100, speed + 10)
+                # reapplique la meme direction avec la nouvelle vitesse
+                if current_throttle > 0:
+                    drive_ramp(speed / 100.0)
+                elif current_throttle < 0:
+                    drive_ramp(-speed / 100.0)
                 print(f"  Vitesse -> {speed}%")
             elif cmd == '-':
                 speed = max(5, speed - 10)
+                if current_throttle > 0:
+                    drive_ramp(speed / 100.0)
+                elif current_throttle < 0:
+                    drive_ramp(-speed / 100.0)
                 print(f"  Vitesse -> {speed}%")
             elif cmd == 'c':
                 calibrate_servo()
@@ -129,3 +137,4 @@ if __name__ == '__main__':
         pass
     finally:
         destroy()
+        print("Au revoir.")
