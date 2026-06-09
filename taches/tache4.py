@@ -48,7 +48,6 @@ def drive_ramp(direction, target_speed=25, ramp_time=5.0):
         _set_all_motors(0)
         print("[STOP]")
         return
-    target_speed = max(0, min(100, target_speed))
     steps = 100
     delay = ramp_time / steps
     for step in range(1, steps + 1):
