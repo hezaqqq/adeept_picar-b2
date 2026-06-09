@@ -52,7 +52,7 @@ def drive(direction, speed=25):
     speed     : 0–100 %  (défaut 25 % pour les premiers tests)
     """
     speed = max(0, min(100, speed))          # clamp 0–100
-    throttle = _map(speed, 0, 100, 0.0, 1.0)
+    throttle = map(speed, 0, 100, 0.0, 1.0)
 
     if direction == 0:
         _set_all_motors(0)
