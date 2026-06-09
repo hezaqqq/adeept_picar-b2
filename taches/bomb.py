@@ -80,7 +80,10 @@ def play_bomb_sequence():
             pulse_duration = current_delay * 0.4
             
             set_lights(True)
-            tb.play(current_freq)
+            try:
+                tb.play(current_freq)
+            except ValueError:
+                pass
             time.sleep(pulse_duration)
             
             tb.stop()
@@ -88,8 +91,11 @@ def play_bomb_sequence():
             time.sleep(current_delay - pulse_duration)
             
         set_lights(True)
-        for freq in range(2000, 100, -40):
-            tb.play(freq)
+        for freq in range(1500, 260, -40):
+            try:
+                tb.play(freq)
+            except ValueError:
+                break
             time.sleep(0.01)
             
         tb.stop()
