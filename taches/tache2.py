@@ -2,50 +2,56 @@ import time
 from robotLight import RobotWS2812 
 
 class LEDController:
-    def __init__(self):
+    def __init__(self, led_count=14):
         self.led_driver = RobotWS2812()
-        self.led_driver.LED_COUNT = 14
-        self.colors_map = {
-            'R': (255, 0, 0),
-            'G': (0, 255, 0),
-            'B': (0, 0, 255),
-            'N': (0, 0, 0)
-        }
+        self.led_count = led_count
+        
+        self.led_red_offset = 0
+        self.led_green_offset = 1
+        self.led_blue_offset = 2
+
+        self.led_brightness_list = [255] * self.led_count
+        self.led_original_color = [0] * (self.led_count * 3)
+        self.led_color = [0] * (self.led_count * 3)
     
-    
+    def set_ledpixel(self, index, r, g, b, brightness=None):
+        if index < 0 or index >= self.led_count:
+            print(f"LED {index} invalide(0-{self.led_count-1}).")
+            return 
+            
+        if brightness is not None:
+            self.led_brightness_list[index] = brightness
+            
+        current_brightness = self.led_brightness_list[index]
+        
+        p = [0, 0, 0]
+        p[self.led_red_offset] = round(r * current_brightness / 255)
+        p[self.led_green_offset] = round(g * current_brightness / 255)
+        p[self.led_blue_offset] = round(b * current_brightness / 255)
+        
+        self.led_original_color[index * 3 + self.led_red_offset] = r
+        self.led_original_color[index * 3 + self.led_green_offset] = g
+        self.led_original_color[index * 3 + self.led_blue_offset] = b
+        
+        for i in range(3):
+            self.led_color[index * 3 + i] = p[i]
 
-    def control_led(self, led_no, color, intensity=255):
-        if not (0 <= led_no < 14):
-            print(f"Erreur : Le numéro de LED {led_no} est invalide (doit être entre 0 et 13).")
-            return
-
-        color = color.upper()
-        if color not in self.colors_map:
-            print(f"Erreur : Couleur '{color}' non reconnue. Utilisez R, G, B ou N.")
-            return
-        intensity = max(0, min(255, int(intensity)))
-        base_r, base_g, base_b = self.colors_map[color]
-
-        r = int((base_r * intensity) / 255)
-        g = int((base_g * intensity) / 255)
-        b = int((base_b * intensity) / 255)
-
-        self.led_driver.strip.setPixelColor(led_no, (r << 16) | (g << 8) | b)
-        self.led_driver.strip.show()
+    def set_led_color_data(self, index, r, g, b, brightness=None):
+        self.set_ledpixel(index, r, g, b, brightness) 
 
     def turn_off_all(self):
-        """Éteint toutes les LED d'un coup."""
-        for i in range(14):
-            self.led_driver.strip.setPixelColor(i, 0)
-        self.led_driver.strip.show()
+        for i in range(self.led_count):
+            self.led_original_color[i*3 : i*3+3] = [0, 0, 0]
+            self.led_color[i*3 : i*3+3] = [0, 0, 0]
+            self.led_brightness_list[i] = 255
 
 
 if __name__ == "__main__":
-    controller = LEDController()
+    controller = LEDController(led_count=14)
     controller.turn_off_all()
     
-    print("<n°LED> <Couleur> [Intensité]")
-    print("-" * 30)
+    print("Format : <n°LED> <R> <G> <B> [Intensité]")
+    print("-" * 45)
 
     while True:
         try:
@@ -56,29 +62,26 @@ if __name__ == "__main__":
                 break
                 
             elements = commande.split()
-            if len(elements) < 2:
-                print("Format invalide. Rappel : <n°LED> <Couleur> [Intensité]")
+            if len(elements) < 4:
+                print("Format invalide")
                 continue
                 
-            if not elements[0].isdigit():
-                print("Le numéro de LED doit être un entier.")
-                continue
-            led_no = int(elements[0])
-            color = elements[1]
+            index = int(elements[0])
+            r = int(elements[1])
+            g = int(elements[2])
+            b = int(elements[3])
+            
+            if len(elements) >= 5:
+                brightness = int(elements[4])
+            else:
+                brightness = 255
 
-            intensity = 255
-            if len(elements) >= 3:
-                if elements[2].isdigit():
-                    intensity = int(elements[2])
-                else:
-                    print("L'intensité doit être un entier entre 0 et 255")
-
-            controller.control_led(led_no, color, intensity)
-            print(f"LED {led_no} -> Couleur {color.upper()} (Intensité: {min(max(0, intensity), 255)})")
+            controller.set_led_color_data(index, r, g, b, brightness)
+            print(f"LED {index} -> ({r}, {g}, {b}) Intensité: {brightness}")
 
         except KeyboardInterrupt:
             controller.turn_off_all()
-            print("\nProgramme interrompu.")
             break
+
         except Exception as e:
-            print(f"Une erreur est survenue : {e}")
+            print(f"Erreur : {e}")
