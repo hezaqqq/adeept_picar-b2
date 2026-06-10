@@ -9,7 +9,7 @@ import tache5 as t5
 
 # ── Constantes ───────────────────────────────────────────────
 VITESSE_MARCHE   = 0.35   # throttle de marche avant (35%)
-DIST_OBSTACLE_MM = 200.0    # seuil d'arret en mm (20 cm)
+DIST_OBSTACLE_MM = 300.0    # seuil d'arret en mm (20 cm)
 PERIODE_CAPTEUR  = 0.05   # lecture distance toutes les 50 ms
 
 # ── Initialisation des modules ───────────────────────────────
