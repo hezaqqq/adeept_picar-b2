@@ -7,6 +7,7 @@ import busio
 from adafruit_motor import servo
 from adafruit_pca9685 import PCA9685
 
+
 # Classe 1 : ServoController
 # Gere le PCA9685 et le pilotage de tous les servomoteurs
 class ServoController:
