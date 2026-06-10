@@ -33,12 +33,12 @@ if __name__ == "__main__":
 
             if adc_value < 125:
                 current_angle -= STEP_SIZE
-            elif adc_value > 140:
+            elif adc_value > 150:
                 current_angle += STEP_SIZE
 
             current_angle = max(MIN_ANGLE, min(MAX_ANGLE, current_angle))
             controller.set_angle(0, current_angle)
-            time.sleep(0.05)   # ← small delay to avoid hammering the I2C bus
+            time.sleep(0.05) 
 
     finally:
         controller.deinit()
