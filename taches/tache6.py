@@ -2,6 +2,7 @@ import time
 import argparse
 from gpiozero import InputDevice
 
+# Initialisation de la classe LineFollower pour les capteurs de suivi de ligne
 class LineFollower:
     def __init__(self):
         self.line_pin_left = 22
