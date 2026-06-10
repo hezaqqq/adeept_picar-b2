@@ -12,10 +12,10 @@ from adafruit_pca9685 import PCA9685
 class ServoController:
     # Plages d'angles sûres par canal
     SAFE_ANGLES = {
-        0: (60, 120),   # CH0 – servo mecanique → ±30° autour du centre (90°)
-        1: (60, 120),   # CH1 – servo mecanique → ±30° autour du centre (90°)
-        2: (60, 120),   # CH2 – servo mecanique → ±30° autour du centre (90°)
-        7: (0,  180),   # CH7 – servo libre, pleine plage autorisee
+        0: (65, 125),   # CH0 – servo mecanique → ±30° autour du centre (90°)
+        1: (65, 125),   # CH1 – servo mecanique → ±30° autour du centre (90°)
+        2: (65, 125),   # CH2 – servo mecanique → ±30° autour du centre (90°)
+        7: (0,  185),   # CH7 – servo libre, pleine plage autorisee
     }
 
     MIN_PULSE = 500   
@@ -47,7 +47,7 @@ class ServoController:
     def center_all(self) -> None:
         """Remet tous les servos configures à 90° (position centrale)."""
         for ch in self.SAFE_ANGLES:
-            self.set_angle(ch, 90)
+            self.set_angle(ch, 95)
             time.sleep(0.1)
 
     def deinit(self) -> None:
