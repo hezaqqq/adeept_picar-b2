@@ -91,7 +91,7 @@ class MotorController:
 
 
 # ── Programme principal : commande manuelle ──────────────────
-if __name__ == '__main__':
+def run():
     mc    = MotorController()
     speed = 25  # vitesse de base en %
 
@@ -134,3 +134,6 @@ if __name__ == '__main__':
         pass
     finally:
         mc.destroy()
+
+if __name__ == "__main__":
+    run()

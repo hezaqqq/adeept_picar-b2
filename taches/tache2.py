@@ -33,7 +33,7 @@ class LEDController:
         self.show()
 
 
-if __name__ == "__main__":
+def run():
     controller = LEDController(led_count=14)
     controller.turn_off_all()
     print("Enter: <index> <r> <g> <b> [brightness]  — or 'q' to quit")
@@ -55,3 +55,6 @@ if __name__ == "__main__":
             break
         except (ValueError, IndexError):
             print("<index> <r> <g> <b> [brightness]")
+
+if __name__ == "__main__":
+    run()

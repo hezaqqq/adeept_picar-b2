@@ -20,7 +20,7 @@ class LineFollower:
         print('left: %d   middle: %d   right: %d' %(status_right,status_middle,status_left))
 
 
-if __name__ == '__main__':
+def run():
     try:
       line_follower = LineFollower()
       while 1:
@@ -29,4 +29,5 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         pass
 
-
+if __name__ == "__main__":    
+    run()

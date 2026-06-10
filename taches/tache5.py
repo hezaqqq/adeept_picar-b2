@@ -14,11 +14,14 @@ class Distance:
         return self.sensor.distance * 1000  # Convert meters to millimeters.
 
 
-if __name__ == "__main__":
+def run():
     distance_sensor = Distance()
     while True:
         distance = distance_sensor.checkdist()
         print("%.2f mm" % distance)
         sleep(0.05)
+
+if __name__ == "__main__":
+    run()
 
 

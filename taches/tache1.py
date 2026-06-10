@@ -45,7 +45,7 @@ class RobotLEDController:
             self.switch(led_id, 0)
 
 
-if __name__ == "__main__":
+def run():
     controller = RobotLEDController()
     controller.switchSetup() # On configure les LEDs
     controller.set_all_switch_off() # On éteint tout
@@ -86,3 +86,6 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             controller.set_all_switch_off()
             break
+
+if __name__ == "__main__":
+    run()

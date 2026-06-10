@@ -142,7 +142,7 @@ class ServoManual:
                 self.ctrl.center_all()
                 break
 
-if __name__ == "__main__":
+def run():
     print("=== Contrôle Servomoteurs – Robot Adeept ===\n")
     controller = ServoController()
 
@@ -157,3 +157,6 @@ if __name__ == "__main__":
     manual.run()
 
     controller.deinit()
+
+if __name__ == "__main__":
+    run()
