@@ -134,6 +134,3 @@ def run():
         pass
     finally:
         mc.destroy()
-
-if __name__ == "__main__":
-    run()
