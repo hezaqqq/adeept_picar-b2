@@ -40,6 +40,8 @@ if __name__ == "__main__":
                     current_angle = max(130, current_angle - 5)
                 elif ecart > 5:
                     current_angle = min(60, current_angle + 5)
+                else :
+                    current_angle = 100
 
                 controller.set_angle(0, current_angle)
 
