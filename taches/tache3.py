@@ -140,20 +140,25 @@ class ServoManual:
                 break
 
 def run():
-    print("=== Contrôle Servomoteurs – Robot Adeept ===\n")
-    controller = ServoController()
+    try:
+        print("=== Contrôle Servomoteurs – Robot Adeept ===\n")
+        controller = ServoController()
 
-    # etape 1 : test automatique servo libre CH7
-    print("etape 1 : test servo libre CH7")
-    tester = ServoTester(controller)
-    tester.run()
+        # etape 1 : test automatique servo libre CH7
+        print("etape 1 : test servo libre CH7")
+        tester = ServoTester(controller)
+        tester.run()
 
-    # etape 2 : commande manuelle
-    print("etape 2 : commande manuelle (CH0, CH1, CH2, CH7)")
-    manual = ServoManual(controller)
-    manual.run()
+        # etape 2 : commande manuelle
+        print("etape 2 : commande manuelle (CH0, CH1, CH2, CH7)")
+        manual = ServoManual(controller)
+        manual.run()
 
-    controller.deinit()
+        controller.deinit()
+
+    except KeyboardInterrupt:
+        pass
+
 
 if __name__ == "__main__":
     run()
