@@ -10,7 +10,7 @@ import tache5 as t5
 class RobotController:
 
     VITESSE_MARCHE   = 0.25
-    DIST_OBSTACLE_MM = 300.0
+    DIST_OBSTACLE_MM = 200.0
     PERIODE_CAPTEUR  = 0.05
 
     def __init__(self):

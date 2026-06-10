@@ -46,9 +46,12 @@ if __name__ == "__main__":
                 # Détecte l'arrêt sur obstacle
                 if was_en_marche and not robot.en_marche:
                     print("Obstacle détecté, recul de 30cm")
-                    robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=0.5)
-                    time.sleep(1.5) 
+                    robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=2)
+                    time.sleep(1.5)
                     robot.mc.drive_ramp(0.0, ramp_time=0.1)
+                    controller.set_angle(0, 100)
+                    time.sleep(2)
+                    robot.demarrer()
 
                 was_en_marche = robot.en_marche
                 time.sleep(0.05)
