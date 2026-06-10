@@ -72,7 +72,7 @@ def demarrer():
 def arreter():
     global en_marche
     en_marche = False
-    mc.drive_ramp(0.0, ramp_time=0)
+    mc.drive_ramp(0.0, ramp_time=0.00001)
     print("[MOTEUR] Arret")
 
 # ── Thread surveillance capteur ──────────────────────────────
