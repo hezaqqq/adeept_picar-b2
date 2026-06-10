@@ -8,7 +8,7 @@ import tache6 as t6
 robot_led_controller = t1.RobotLEDController()
 led_controller = t2.LEDController(led_count=14)
 servo_controller = t3.ServoController()
-servo_sequence = t3.ServoSequence(servo_controller)
+servo_sequence = t3.ServoTester(servo_controller)
 servo_manual = t3.ServoManual(servo_controller)
 motor_controller = t4.MotorController()
 distance_sensor = t5.Distance()
@@ -29,4 +29,3 @@ for i in range(len(action)):
     elif action[i] == '6':
         t6.__main__()
 
-        
