@@ -26,7 +26,7 @@ class ServoController:
         i2c = busio.I2C(SCL, SDA)
         self.pca = PCA9685(i2c, address=0x5f)
         self.pca.frequency = 50
-        print("  ✓ PCA9685 initialisé (I2C 0x5f, 50 Hz)")
+        print("PCA9685 initialisé (I2C 0x5f, 50 Hz)")
 
     def set_angle(self, servo_id: int, angle: float) -> None:
         min_safe, max_safe = self.SAFE_ANGLES.get(servo_id, (0, 180))
