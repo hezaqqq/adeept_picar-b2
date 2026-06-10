@@ -17,15 +17,15 @@ line_follower = t6.LineFollower()
 action = input("Entrez les numéros de tâche à exécuter séparés d'un espace : ").strip().split()
 for i in range(len(action)):
     if action[i] == '1':
-        t1.__main__()
+        t1.__name__()
     elif action[i] == '2':
-        t2.__main__()
+        t2.__name__()
     elif action[i] == '3':
-        t3.__main__()
+        t3.__name__()
     elif action[i] == '4':
-        t4.__main__()
+        t4.__name__()
     elif action[i] == '5':
-        t5.__main__()
+        t5.__name__()
     elif action[i] == '6':
-        t6.__main__()
+        t6.__name__()
 
