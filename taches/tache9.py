@@ -87,7 +87,7 @@ def _surveiller_distance():
         time.sleep(PERIODE_CAPTEUR)
 
 # ── Programme principal ──────────────────────────────────────
-if __name__ == '__main__':
+def run():
     print("=== TACHE 9 : Marche avant avec arret sur obstacle ===")
     print("  M  - demarrer la marche avant")
     print("  A  - arret manuel")
@@ -116,3 +116,7 @@ if __name__ == '__main__':
         desactiver_feux()
         mc.destroy()
         print("Nettoyage final realise")
+
+if __name__ == "__main__":
+    run()
+
