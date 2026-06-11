@@ -17,10 +17,11 @@ if __name__ == "__main__":
         linecap    = t6.LineFollower()
         controller = t3.ServoController()
 
-        current_angle   = ANGLE_CENTER
+        current_angle      = ANGLE_CENTER
         controller.set_angle(0, current_angle)
-        was_en_marche   = robot.en_marche
-        ligne_perdue_ts = None  
+        was_en_marche      = robot.en_marche
+        ligne_perdue_ts    = None
+        angle_avant_perte  = ANGLE_CENTER
 
         robot.demarrer()
 
@@ -29,45 +30,51 @@ if __name__ == "__main__":
             m = linecap.middle.value
             l = linecap.left.value
 
+            if not (r == 0 and m == 0 and l == 0):
+                angle_avant_perte = current_angle
+
             if   r == 0 and m == 1 and l == 0:
-                current_angle = ANGLE_CENTER      
+                current_angle = ANGLE_CENTER
             elif r == 1 and m == 0 and l == 0:
-                current_angle += 5  
+                current_angle += 5
             elif r == 0 and m == 0 and l == 1:
-                current_angle -= 5 
+                current_angle -= 5
             elif r == 1 and m == 1 and l == 0:
-                current_angle += 2 
+                current_angle += 2
             elif r == 0 and m == 1 and l == 1:
                 current_angle -= 2
             elif r == 1 and m == 1 and l == 1:
                 current_angle = ANGLE_CENTER
 
             elif r == 0 and m == 0 and l == 0:
-                # Ligne perdue
                 if ligne_perdue_ts is None:
                     ligne_perdue_ts = time.time()
 
                 elapsed = time.time() - ligne_perdue_ts
 
+                # Angle inversé : symétrique par rapport au centre
+                angle_recul = ANGLE_CENTER + (ANGLE_CENTER - angle_avant_perte)
+                angle_recul = max(ANGLE_MIN, min(ANGLE_MAX, angle_recul))
+                current_angle = angle_recul
+
                 if elapsed < 1.5:
-                    # on continue tout droit 
-                    pass
+                    pass  # continue tout droit avec l'angle inversé
                 else:
-                    # on recule doucement pour retrouver la ligne
                     if robot.en_marche:
                         robot.arreter()
-                        current_angle = ANGLE_CENTER
                         time.sleep(0.1)
-                        robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=1.0)
+                        robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=elapsed)
+                    ligne_perdue_ts = None  # reset pour retenter
                     robot.demarrer()
-                    
+
             else:
-                ligne_perdue_ts = None  # ligne retrouvée
+                ligne_perdue_ts = None
 
             # Sécurité bornes servo
             current_angle = max(ANGLE_MIN, min(ANGLE_MAX, current_angle))
             controller.set_angle(0, current_angle)
 
+            # Reprise après obstacle
             if was_en_marche and not robot.en_marche:
                 if r != 0 or m != 0 or l != 0:
                     print("Obstacle détecté — reprise dans 2s")
