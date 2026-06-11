@@ -62,7 +62,7 @@ if __name__ == "__main__":
                     time.sleep(0.5)
                     robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=0.5)
                 ligne_perdue_ts = None  # reset pour retenter
-                time.sleep(2)
+                time.sleep(0.5)
                 robot.demarrer()
 
             else:
