@@ -20,15 +20,15 @@ if __name__ == "__main__":
 
         while True:
             if (linecap.right.value == 1) and (linecap.middle.value == 0) and (linecap.left.value == 0):
-                current_angle -= 5
-            elif (linecap.right.value == 0) and (linecap.middle.value == 0) and (linecap.left.value == 1):
                 current_angle += 5
+            elif (linecap.right.value == 0) and (linecap.middle.value == 0) and (linecap.left.value == 1):
+                current_angle -= 5
             elif (linecap.right.value == 1) and (linecap.middle.value == 1) and (linecap.left.value == 0):
-                current_angle -= 2
-            elif (linecap.right.value == 0) and (linecap.middle.value == 1) and (linecap.left.value == 1):
                 current_angle += 2
+            elif (linecap.right.value == 0) and (linecap.middle.value == 1) and (linecap.left.value == 1):
+                current_angle -= 2
             elif (linecap.right.value == 0) and (linecap.middle.value == 0) and (linecap.left.value == 0):
-                robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=2)
+                robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=0.5)
                 time.sleep(1.5)
 
             controller.set_angle(0, current_angle)
