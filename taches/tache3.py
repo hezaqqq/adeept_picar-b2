@@ -13,7 +13,7 @@ from adafruit_pca9685 import PCA9685
 class ServoController:
     # Plages d'angles sûres par canal
     SAFE_ANGLES = {
-        0: (70, 130),   # CH0 – servo mecanique → ±30° autour du centre (90°)
+        0: (60, 140),   # CH0 – servo mecanique → ±30° autour du centre (90°)
         1: (70, 130),   # CH1 – servo mecanique → ±30° autour du centre (90°)
         2: (70, 130),   # CH2 – servo mecanique → ±30° autour du centre (90°)
         7: (0,  185),   # CH7 – servo libre, pleine plage autorisee
