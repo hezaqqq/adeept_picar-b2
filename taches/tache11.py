@@ -56,8 +56,9 @@ if __name__ == "__main__":
                     # on recule doucement pour retrouver la ligne
                     if robot.en_marche:
                         robot.arreter()
+                        current_angle = ANGLE_CENTER
                         robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=0.3)
-                    current_angle = ANGLE_CENTER
+                    
                 else:
 
                     robot.arreter()
