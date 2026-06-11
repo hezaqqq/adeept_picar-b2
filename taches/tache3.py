@@ -159,6 +159,9 @@ def run():
     except KeyboardInterrupt:
         pass
 
+    finally:
+        controller.set_angle(0, 100)
+        controller.deinit()
 
 if __name__ == "__main__":
     run()

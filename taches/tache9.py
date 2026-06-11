@@ -112,10 +112,11 @@ class RobotController:
             print("\nFin de programme par Ctrl-C")
 
         finally:
-            self.arreter()
-            self.desactiver_feux()
-            self.mc.destroy()
-            print("Nettoyage final realise")
+            self.controller.set_angle(0, 100)
+            self.controller.deinit()
+            self.arreter()          # ← stoppe les moteurs
+            self.desactiver_feux()  # ← éteint les LEDs
+            self.mc.destroy()       # ← deinit PCA9685
 
 
 if __name__ == "__main__":
