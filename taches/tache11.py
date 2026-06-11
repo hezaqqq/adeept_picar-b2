@@ -33,13 +33,13 @@ if __name__ == "__main__":
             if   r == 0 and m == 1 and l == 0:
                 current_angle = ANGLE_CENTER
             elif r == 1 and m == 0 and l == 0:
-                current_angle += 5
+                current_angle += 10
             elif r == 0 and m == 0 and l == 1:
-                current_angle -= 5
+                current_angle -= 100
             elif r == 1 and m == 1 and l == 0:
-                current_angle += 2
+                current_angle += 5
             elif r == 0 and m == 1 and l == 1:
-                current_angle -= 2
+                current_angle -= 5
             elif r == 1 and m == 1 and l == 1:
                 current_angle = ANGLE_CENTER
 
