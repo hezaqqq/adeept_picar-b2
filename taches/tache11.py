@@ -20,7 +20,7 @@ if __name__ == "__main__":
         current_angle   = ANGLE_CENTER
         controller.set_angle(0, current_angle)
         was_en_marche   = robot.en_marche
-        ligne_perdue_ts = None   # timestamp du moment où la ligne a été perdue
+        ligne_perdue_ts = None  
 
         robot.demarrer()
 
@@ -29,19 +29,18 @@ if __name__ == "__main__":
             m = linecap.middle.value
             l = linecap.left.value
 
-            # ── Suivi de ligne ────────────────────────────────────────
             if   r == 0 and m == 1 and l == 0:
-                current_angle = ANGLE_CENTER          # ligne droite
+                current_angle = ANGLE_CENTER      
             elif r == 1 and m == 0 and l == 0:
-                current_angle += 5                    # déviation droite → corriger droite
+                current_angle += 5  
             elif r == 0 and m == 0 and l == 1:
-                current_angle -= 5                    # déviation gauche → corriger gauche
+                current_angle -= 5 
             elif r == 1 and m == 1 and l == 0:
-                current_angle += 2                    # légère droite
+                current_angle += 2 
             elif r == 0 and m == 1 and l == 1:
-                current_angle -= 2                    # légère gauche
+                current_angle -= 2
             elif r == 1 and m == 1 and l == 1:
-                current_angle = ANGLE_CENTER          # intersection → tout droit
+                current_angle = ANGLE_CENTER
 
             elif r == 0 and m == 0 and l == 0:
                 # Ligne perdue
@@ -51,27 +50,25 @@ if __name__ == "__main__":
                 elapsed = time.time() - ligne_perdue_ts
 
                 if elapsed < 1.0:
-                    # Phase 1 : on continue tout droit brièvement
+                    # on continue tout droit 
                     pass
                 elif elapsed < 3.0:
-                    # Phase 2 : on recule doucement pour retrouver la ligne
+                    # on recule doucement pour retrouver la ligne
                     if robot.en_marche:
                         robot.arreter()
                         robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=0.3)
                     current_angle = ANGLE_CENTER
                 else:
-                    # Phase 3 : ligne toujours pas trouvée → stop total
+
                     robot.arreter()
             else:
-                ligne_perdue_ts = None  # ligne retrouvée, reset
+                ligne_perdue_ts = None  # ligne retrouvée
 
             # Sécurité bornes servo
             current_angle = max(ANGLE_MIN, min(ANGLE_MAX, current_angle))
             controller.set_angle(0, current_angle)
 
-            # ── Reprise après obstacle ────────────────────────────────
             if was_en_marche and not robot.en_marche:
-                # Vérifie que c'est bien un obstacle (pas une perte de ligne)
                 if r != 0 or m != 0 or l != 0:
                     print("Obstacle détecté — reprise dans 2s")
                     time.sleep(2)
