@@ -110,6 +110,8 @@ class RobotController:
 
         except KeyboardInterrupt:
             print("\nFin de programme par Ctrl-C")
+            self.arreter()          # ← stoppe les moteurs
+            self.desactiver_feux()  # ← éteint les LEDs
 
         finally:
             self.controller.set_angle(0, 100)
