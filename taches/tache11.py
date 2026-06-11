@@ -63,8 +63,10 @@ if __name__ == "__main__":
                     if robot.en_marche:
                         robot.arreter()
                         time.sleep(0.1)
-                        robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=elapsed)
+                        robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=1.7)
                     ligne_perdue_ts = None  # reset pour retenter
+                    controller.set_angle(0, angle_avant_perte)  # remet le servo à l'angle avant perte pour "rechercher" la ligne
+                    time.sleep(2)
                     robot.demarrer()
 
             else:
