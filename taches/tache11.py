@@ -49,20 +49,18 @@ if __name__ == "__main__":
 
                 elapsed = time.time() - ligne_perdue_ts
 
-                if elapsed < 0.1:
+                if elapsed < 1.5:
                     # on continue tout droit 
                     pass
-                elif elapsed < 1.0:
+                else:
                     # on recule doucement pour retrouver la ligne
                     if robot.en_marche:
                         robot.arreter()
                         current_angle = ANGLE_CENTER
+                        time.sleep(0.1)
                         robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=1.2)
                     robot.demarrer()
                     
-                else:
-
-                    robot.arreter()
             else:
                 ligne_perdue_ts = None  # ligne retrouvée
 
