@@ -33,13 +33,13 @@ if __name__ == "__main__":
             if   r == 0 and m == 1 and l == 0:
                 current_angle = ANGLE_CENTER
             elif r == 1 and m == 0 and l == 0:
-                current_angle = 60
+                current_angle += 15
             elif r == 0 and m == 0 and l == 1:
-                current_angle = 140
+                current_angle -= 15
             elif r == 1 and m == 1 and l == 0:
-                current_angle = 80
+                current_angle += 5
             elif r == 0 and m == 1 and l == 1:
-                current_angle = 120
+                current_angle -= 5
             elif r == 1 and m == 1 and l == 1:
                 current_angle = ANGLE_CENTER
 
@@ -61,6 +61,7 @@ if __name__ == "__main__":
                     controller.set_angle(0, current_angle)
                     time.sleep(0.5)
                     robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=0.5)
+                current_angle = angle_avant_perte  # garde en mémoire l'angle avant perte de ligne pour le prochain passage
                 ligne_perdue_ts = None  # reset pour retenter
                 time.sleep(0.5)
                 robot.demarrer()
