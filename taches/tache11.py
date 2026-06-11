@@ -22,17 +22,17 @@ if __name__ == "__main__":
         try:
             while True:
                 if (linecap.right.value == 1) and (linecap.middle.value == 0) and (linecap.left.value == 0):
-                    current_angle = max(60, current_angle - 5)
+                    current_angle -= 5
                 elif (linecap.right.value == 0) and (linecap.middle.value == 0) and (linecap.left.value == 1):
-                    current_angle = min(140, current_angle + 5)
+                    current_angle += 5
                 elif (linecap.right.value == 0) and (linecap.middle.value == 1) and (linecap.left.value == 0):
-                    current_angle = 100
+                    current_angle = current_angle  # Pas de changement
                 elif (linecap.right.value == 1) and (linecap.middle.value == 1) and (linecap.left.value == 1):
                     current_angle = current_angle  # Pas de changement
                 elif (linecap.right.value == 1) and (linecap.middle.value == 1) and (linecap.left.value == 0):
-                    current_angle = max(80, current_angle - 2)
+                    current_angle -=2
                 elif (linecap.right.value == 0) and (linecap.middle.value == 1) and (linecap.left.value == 1):
-                    current_angle = min(120, current_angle + 2)
+                    current_angle +=2
 
                 print(f"Line sensors: R={linecap.right.value} M={linecap.middle.value} L={linecap.left.value} | Angle: {current_angle}°")
                     
@@ -55,3 +55,10 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         pass
+
+    finally:
+        controller.set_angle(0, 100)
+        controller.deinit()
+        robot.arreter()          # ← stoppe les moteurs
+        robot.desactiver_feux()  # ← éteint les LEDs
+        robot.mc.destroy()       # ← deinit PCA9685
