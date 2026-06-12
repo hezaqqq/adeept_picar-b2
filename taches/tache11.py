@@ -1,33 +1,12 @@
 import tache9 as t9
 import tache6 as t6
 import tache3 as t3
-import tache1 as t1
 import threading
 import time
 
 ANGLE_CENTER = 100
 ANGLE_MIN    = 60
 ANGLE_MAX    = 140
-
-LEDS_DROITE    = [7, 9]       # 17, 19
-LEDS_GAUCHE    = [4, 6]       # 14, 16
-LEDS_TOUT_DROIT = [4, 5, 6, 7, 8, 9]  # 14 à 19
-
-def set_direction_leds(led_ctrl, direction):
-    """direction : 'droite', 'gauche', 'tout_droit', ou 'off'"""
-    # Éteindre toutes les LEDs 4 à 9
-    for i in range(4, 10):
-        led_ctrl.switch(i, 0)
-
-    if direction == "droite":
-        for i in LEDS_DROITE:
-            led_ctrl.switch(i, 1)
-    elif direction == "gauche":
-        for i in LEDS_GAUCHE:
-            led_ctrl.switch(i, 1)
-    elif direction == "tout_droit":
-        for i in LEDS_TOUT_DROIT:
-            led_ctrl.switch(i, 1)
 
 if __name__ == "__main__":
     try:
@@ -38,19 +17,13 @@ if __name__ == "__main__":
         linecap    = t6.LineFollower()
         controller = t3.ServoController()
 
-        # Init LEDs
-        led_ctrl = t1.RobotLEDController()
-        led_ctrl.switchSetup()
-        led_ctrl.set_all_switch_off()
-
         current_angle      = ANGLE_CENTER
         controller.set_angle(0, current_angle)
         was_en_marche      = robot.en_marche
         ligne_perdue_ts    = None
         angle_avant_perte  = ANGLE_CENTER
-        last_direction     = None  # Pour éviter les appels répétés inutiles
 
-        previous_r = previous_m = previous_l = 1
+        previous_r = previous_m = previous_l = 1  # Assume all sensors start on the line
 
         robot.demarrer()
         
@@ -59,41 +32,33 @@ if __name__ == "__main__":
             m = linecap.middle.value
             l = linecap.left.value
 
-            direction = None  # direction déterminée à chaque itération
-
-            if r == 0 and m == 1 and l == 0:
+            if   r == 0 and m == 1 and l == 0:
                 current_angle = ANGLE_CENTER
                 t9.RobotController.VITESSE_MARCHE = 0.3
-                direction = "tout_droit"
 
             elif r == 1 and m == 0 and l == 0:
                 current_angle += 20
                 t9.RobotController.VITESSE_MARCHE = 0.25
-                direction = "droite"
 
             elif r == 0 and m == 0 and l == 1:
                 current_angle -= 20
                 t9.RobotController.VITESSE_MARCHE = 0.25
-                direction = "gauche"
 
             elif r == 1 and m == 1 and l == 0:
                 current_angle += 10
                 t9.RobotController.VITESSE_MARCHE = 0.3
-                direction = "droite"
 
             elif r == 0 and m == 1 and l == 1:
                 current_angle -= 10
                 t9.RobotController.VITESSE_MARCHE = 0.3
-                direction = "gauche"
 
             elif r == 1 and m == 1 and l == 1:
                 current_angle = ANGLE_CENTER
-                direction = "tout_droit"
+
 
             elif r == 0 and m == 0 and l == 0:
-                direction = "off"
                 if (previous_r == 0 and previous_m == 1 and previous_l == 0) or (previous_r == 1 and previous_m == 1 and previous_l == 1):
-                    robot.mc.drive_ramp(t9.RobotController.VITESSE_MARCHE, ramp_time=0.7)
+                    robot.mc.drive_ramp(t9.RobotController.VITESSE_MARCHE, ramp_time=1.5)
                 else:    
                     angle_avant_perte = current_angle
                     if ligne_perdue_ts is None:
@@ -101,33 +66,32 @@ if __name__ == "__main__":
 
                     elapsed = time.time() - ligne_perdue_ts
 
+                    # Angle inversé : symétrique par rapport au centre
                     angle_recul = ANGLE_CENTER + (ANGLE_CENTER - angle_avant_perte)
                     current_angle = angle_recul
+
 
                     if robot.en_marche:
                         robot.arreter()
                         controller.set_angle(0, current_angle)
                         robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=elapsed+0.5)
-                    ligne_perdue_ts = None
+                    ligne_perdue_ts = None  # reset pour retenter
 
-                    current_angle = angle_avant_perte
+                    current_angle = angle_avant_perte  # pour préparer la reprise
                     controller.set_angle(0, current_angle)
                     robot.demarrer()
             
-            else:
-                direction = "off"
-                ligne_perdue_ts = None
 
-            # Mise à jour LEDs seulement si la direction change
-            if direction is not None and direction != last_direction:
-                set_direction_leds(led_ctrl, direction)
-                last_direction = direction
+            else:
+                ligne_perdue_ts = None
 
             previous_r = previous_m = previous_l = r, m, l
             
+            # Sécurité bornes servo
             current_angle = max(ANGLE_MIN, min(ANGLE_MAX, current_angle))
             controller.set_angle(0, current_angle)
 
+            # Reprise après obstacle
             if was_en_marche and not robot.en_marche:
                 if r != 0 or m != 0 or l != 0:
                     print("Obstacle détecté — reprise dans 2s")
@@ -146,4 +110,3 @@ if __name__ == "__main__":
         robot.arreter()
         robot.desactiver_feux()
         robot.mc.destroy()
-        led_ctrl.set_all_switch_off()
