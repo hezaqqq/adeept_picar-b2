@@ -9,7 +9,7 @@ import tache5 as t5
 
 class RobotController:
 
-    VITESSE_MARCHE   = 0.3
+    VITESSE_MARCHE   = 0.4
     DIST_OBSTACLE_MM = 200.0
     PERIODE_CAPTEUR  = 0.05
 
