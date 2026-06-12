@@ -59,6 +59,7 @@ if __name__ == "__main__":
             elif r == 0 and m == 0 and l == 0:
                 if (previous_r == 0 and previous_m == 1 and previous_l == 0) or (previous_r == 1 and previous_m == 1 and previous_l == 1):
                     robot.mc.drive_ramp(t9.RobotController.VITESSE_MARCHE, ramp_time=1.5)
+                    time.sleep(1.5)
                 else:    
                     angle_avant_perte = current_angle
                     if ligne_perdue_ts is None:
