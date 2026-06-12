@@ -24,7 +24,6 @@ if __name__ == "__main__":
         angle_avant_perte  = ANGLE_CENTER
 
         robot.demarrer()
-        nb_recule = 0
         
         while True:
             r = linecap.right.value
@@ -33,28 +32,16 @@ if __name__ == "__main__":
 
             if   r == 0 and m == 1 and l == 0:
                 current_angle = ANGLE_CENTER
-                nb_recule = 0
             elif r == 1 and m == 0 and l == 0:
                 current_angle += 20
-                nb_recule = 0
             elif r == 0 and m == 0 and l == 1:
                 current_angle -= 20
-                nb_recule = 0
             elif r == 1 and m == 1 and l == 0:
                 current_angle += 10
-                nb_recule = 0
             elif r == 0 and m == 1 and l == 1:
                 current_angle -= 10
-                nb_recule = 0
             elif r == 1 and m == 1 and l == 1:
                 current_angle = ANGLE_CENTER
-                nb_recule = 0
-            elif r == 0 and m == 0 and l == 0 and nb_recule >= 3:
-                while r == 0 and m == 0 and l == 0:
-                    current_angle = ANGLE_CENTER + (ANGLE_CENTER - angle_avant_perte)
-                    controller.set_angle(0, current_angle)
-                    robot.mc.drive_ramp(-t9.RobotController.VITESSE_MARCHE, ramp_time=0.5)
-                    nb_recule = 0
             elif r == 0 and m == 0 and l == 0:
                 angle_avant_perte = current_angle
                 if ligne_perdue_ts is None:
