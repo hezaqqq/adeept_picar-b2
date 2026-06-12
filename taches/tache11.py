@@ -62,8 +62,8 @@ if __name__ == "__main__":
 
                 current_angle = angle_avant_perte  # pour préparer la reprise
                 controller.set_angle(0, current_angle)
+                robot.mc.drive_ramp(t9.RobotController.VITESSE_MARCHE, ramp_time=elapsed+1.2)
                 robot.demarrer()
-                time.sleep(elapsed)  # temps de réaction avant de reprendre la ligne
 
             else:
                 ligne_perdue_ts = None
