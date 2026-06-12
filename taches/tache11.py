@@ -61,6 +61,7 @@ if __name__ == "__main__":
                 ligne_perdue_ts = None  # reset pour retenter
 
                 currnt_angle = angle_avant_perte  # pour préparer la reprise
+                time.sleep(0.1)  # recul pendant 0.5s
                 robot.demarrer()
 
             else:
